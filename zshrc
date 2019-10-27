@@ -25,3 +25,7 @@ export GOPATH=$HOME/.go
 if [ -f $HOME/dotfiles_private/secret.sh ]; then
   $HOME/dotfiles_private/secret.sh
 fi
+
+source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
+fpath=(/usr/local/share/zsh-completions $fpath)
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
