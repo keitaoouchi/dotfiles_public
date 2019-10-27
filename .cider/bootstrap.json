@@ -1,0 +1,13 @@
+{
+    "formulas": [
+        "direnv",
+        "git",
+        "imagemagick",
+        "jq",
+        "openssl",
+        "pyenv",
+        "rbenv",
+        "zsh-completions",
+        "zsh-syntax-highlighting"
+    ]
+}

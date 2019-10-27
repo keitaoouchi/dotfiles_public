@@ -1,0 +1,60 @@
+branches/*
+log/*
+error_log/*
+tmp/*
+*.bak
+report
+.ctags
+
+# intelliJ
+.idea
+*.iml
+
+# Mac Files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+# Thumbnails
+._*
+# Files that might appear on external disk
+.Spotlight-V100
+.Trashes
+
+#vim
+*~
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# npm
+node_modules
+bin
+
+# dotenv
+.envrc
+.env
+
+# ruby
+vendor/bundler?
+railways.cache
+db/structure.sql
+
+# rails
+config/application.yml
+secrets.yml
+
+# git
+.gitconfig.user
+
+*/project.xcworkspace/xcshareddata/
+Carthage
+fastlane/test_output/
+*.dSYM.zip
