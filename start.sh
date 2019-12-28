@@ -6,4 +6,5 @@ ln -s $HOME/dotfiles_public/gitignore_global $HOME/.gitignore_global
 
 brew install \
     direnv git jq openssl pyenv rbenv \
-    zsh-completions zsh-syntax-highlighting
+    zsh-completions zsh-syntax-highlighting \
+    poetry
