@@ -1,31 +1,32 @@
-# xxenv
-source "$HOME/dotfiles_public/init.vm.sh"
-
-# aliasの設定
-source $HOME/dotfiles_public/alias.sh
-
-# local bin directory
-if [ ! -d $HOME/.bin ]; then
-  mkdir $HOME/.bin
-fi
-
-HOMEBIN=$HOME/.bin
-
-# assemble PATH
-PATH=$HOMEBIN:/usr/local/bin:/usr/local/sbin:$PATH
+# homebrew for arm64
+typeset -U path PATH
+path=(
+	/opt/homebrew/bin(N-/)
+	/usr/local/bin(N-/)
+  $HOME/bin(N-/)
+	$path
+)
 
 # PATHをexport
 export PATH
 
-if [ ! -d $HOME/.go ]; then
-  mkdir $HOME/.go
-fi
-export GOPATH=$HOME/.go
+# xxenv
+source "$HOME/dotfiles_public/init.env.sh"
+
+# aliasの設定
+source $HOME/dotfiles_public/alias.sh
 
 if [ -f $HOME/dotfiles_private/secret.sh ]; then
   $HOME/dotfiles_private/secret.sh
 fi
 
-source "/usr/local/opt/zsh-git-prompt/zshrc.sh"
-fpath=(/usr/local/share/zsh-completions $fpath)
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# enable zsh plugins
+
+source "$(brew --prefix)/opt/zsh-git-prompt/zshrc.sh"
+if type brew &>/dev/null; then
+  FPATH=$(brew --prefix)/share/zsh-completions:$FPATH
+
+  autoload -Uz compinit
+  compinit
+fi
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
