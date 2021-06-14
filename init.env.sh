@@ -1,15 +1,19 @@
 # nodenv初期化(homebrewで導入)
-[[ `which nodenv 2> /dev/null` ]] && eval "$(nodenv init -)"
+if which nodenv >/dev/null 2>&1; then 
+  eval "$(nodenv init -)"
+fi
 
 # rbenv初期化(homebrewで導入)
-[[ `which rbenv 2> /dev/null` ]] && eval "$(rbenv init -)"
+if which rbenv >/dev/null 2>&1; then
+  eval "$(rbenv init -)"
+fi
 
 if [ ! -d $HOME/.go ]; then
   mkdir $HOME/.go
 fi
 export GOPATH=$HOME/.go
 
-if [ `which pyenv 2> /dev/null` ]; then
+if which pyenv >/dev/null 2>&1; then
   export PYENV_ROOT="$HOME/.pyenv"
   export PATH="$PYENV_ROOT/bin:$PATH"
   eval "$(pyenv init --path)"
