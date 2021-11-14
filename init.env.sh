@@ -28,3 +28,6 @@ export JAVA_HOME=`/usr/libexec/java_home`
 if [ -d $HOME/Library/Android/sdk/platform-tools ]; then
   export PATH=$HOME/Library/Android/sdk/platform-tools:$HOME/Library/Android/sdk/tools:$PATH
 fi
+
+# direnv
+eval "$(direnv hook zsh)"
