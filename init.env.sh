@@ -30,4 +30,5 @@ if [ -d $HOME/Library/Android/sdk/platform-tools ]; then
 fi
 
 # direnv
+export EDITOR=code
 eval "$(direnv hook zsh)"
