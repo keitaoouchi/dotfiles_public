@@ -14,6 +14,7 @@
   excludesfile = ~/.gitignore_global
   autocrlf = input
 	editor = vim -c \"set fenc=utf-8\"
+	#sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
 [alias]
   co = checkout
   br = branch
@@ -34,12 +35,6 @@
   log-all = log --graph --all --color --pretty='%x09%h %cn%x09%s %Cred%d%Creset'
   unstage = reset HEAD --
   fix = commit --amend -C HEAD
-[difftool "sourcetree"]
-  cmd = opendiff \"$LOCAL\" \"$REMOTE\"
-  path =
-[mergetool "sourcetree"]
-  cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
-  trustExitCode = true
 [filter "media"]
 	required = true
 	clean = git media clean %f

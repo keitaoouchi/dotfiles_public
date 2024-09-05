@@ -6,11 +6,11 @@
     ```
 - dotfilesを落としてくる
     ```
-    git clone https://github.com/keitaoouchi/dotfiles_public.git
-    git clone https://github.com/keitaoouchi/dotfiles_private.git
+    git clone https://github.com/keitaoouchi/dotfiles_public.git .dotfiles_public
+    git clone https://github.com/keitaoouchi/dotfiles_private.git .dotfiles_private
     ```
 - start.shを実行
     ```zsh
-    code dotfiles_public
-    zsh start.sh
+    cd .dotfiles_public
+    ./start.sh
     ```
