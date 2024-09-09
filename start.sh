@@ -1,3 +1,4 @@
+rm $HOME/.gitconfig $HOME/.gitignore_global $HOME/.tmux.conf $HOME/.asdfrc $HOME/.bash_profile
 ln -s $HOME/.dotfiles_public/gitconfig $HOME/.gitconfig
 ln -s $HOME/.dotfiles_public/gitignore_global $HOME/.gitignore_global
 ln -s $HOME/.dotfiles_public/tmux.conf $HOME/.tmux.conf
@@ -28,8 +29,6 @@ elif [ -x "$(command -v apt)" ]; then
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf
   PATH=$PATH:$HOME/.asdf/bin
 fi
-
-exec $SHELL
 
 asdf plugin add nodejs
 asdf plugin add ruby

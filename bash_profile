@@ -6,6 +6,11 @@ if [ -f $HOME/.dotfiles_private/secret.sh ]; then
   $HOME/.dotfiles_private/secret.sh
 fi
 
+# if mac
+if [ "$(uname)" == 'Darwin' ]; then
+  export PATH=/opt/homebrew/bin:$PATH
+fi
+
 # go
 if [ ! -d $HOME/.go ]; then
   mkdir $HOME/.go
