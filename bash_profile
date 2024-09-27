@@ -9,6 +9,7 @@ fi
 # if mac
 if [ "$(uname)" == 'Darwin' ]; then
   export PATH=/opt/homebrew/bin:$PATH
+  java_macos_integration_enable=yes
 fi
 
 # go
@@ -28,10 +29,15 @@ export EDITOR=code
 eval "$(direnv hook bash)"
 
 # asdf
-if [ -f $HOME/.asdf/bin/asdf ]; then
-  PATH=$PATH:$HOME/.asdf/bin
-  . $HOME/.asdf/asdf.sh
-  . $HOME/.asdf/completions/asdf.bash
+if [ -d $HOME/.asdf/ ]; then
+  PATH=$HOME/.asdf/shims:$PATH
+  . $(brew --prefix asdf)/libexec/asdf.sh
+  . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
+fi
+
+# java
+if [ -f ~/.asdf/plugins/java/set-java-home.bash ]; then
+  source ~/.asdf/plugins/java/set-java-home.bash
 fi
 
 # starship
