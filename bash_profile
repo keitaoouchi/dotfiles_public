@@ -48,3 +48,6 @@ fi
 
 # bash-completion(mac)
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+
+# mise
+eval "$($HOME/.local/bin/mise activate bash)"

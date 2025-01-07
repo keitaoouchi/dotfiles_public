@@ -7,13 +7,13 @@ ln -s $HOME/.dotfiles_public/bash_profile $HOME/.bash_profile
 
 # If brew installed
 if [ -x "$(command -v brew)" ]; then
-  brew install curl direnv git jq openssl tmux
+  brew install curl git jq openssl tmux
   # nerd font
   brew install font-hack-nerd-font
 # If apt available
 elif [ -x "$(command -v apt)" ]; then
   sudo apt update -y
-  sudo apt install -y direnv git jq openssl tmux
+  sudo apt install -y git jq openssl tmux
   # nerd font
   FONT=FiraCode.tar.xz
   curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/$FONT -o ~/.local/share/fonts/$FONT \
@@ -27,11 +27,9 @@ fi
 # Install starship
 curl -sS https://starship.rs/install.sh | sh
 
-# Install asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-PATH=$PATH:$HOME/.asdf/bin
+# Install mise
+curl https://mise.run | sh
+eval "$($HOME/.local/bin/mise activate bash)"
+mise use -g usage
+mise completion bash --include-bash-completion-lib > /opt/homebrew/etc/bash_completion.d/mise
 
-asdf plugin add nodejs
-asdf plugin add ruby
-asdf plugin add python
-asdf plugin add golang
