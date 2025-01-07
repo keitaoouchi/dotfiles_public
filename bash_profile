@@ -8,6 +8,7 @@ fi
 
 # if mac
 if [ "$(uname)" == 'Darwin' ]; then
+  export BASH_SILENCE_DEPRECATION_WARNING=1
   export PATH=/opt/homebrew/bin:$PATH
   java_macos_integration_enable=yes
 fi
@@ -32,7 +33,6 @@ eval "$(direnv hook bash)"
 if [ -d $HOME/.asdf/ ]; then
   PATH=$HOME/.asdf/shims:$PATH
   . $(brew --prefix asdf)/libexec/asdf.sh
-  . $(brew --prefix asdf)/etc/bash_completion.d/asdf.bash
 fi
 
 # java
@@ -43,5 +43,8 @@ fi
 # starship
 if [ -x "$(command -v starship)" ]; then
   eval "$(starship init bash)"
-  starship preset no-nerd-font -o ~/.config/starship.toml
+  starship preset pastel-powerline -o ~/.config/starship.toml
 fi
+
+# bash-completion(mac)
+[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"

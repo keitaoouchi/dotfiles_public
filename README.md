@@ -2,10 +2,12 @@
 
 - homebrew入れる
     ```
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     ```
-- ssh config
-  - https://developer.1password.com/docs/ssh/agent/config/#from-the-1password-app
+- SSHエージェント設定
+  - 1Passwordをインストールする
+  - `vim ~/.config/1Password/ssh/agent.toml` して `vault` を適当な保管庫名に設定
+      - https://developer.1password.com/docs/ssh/agent/config/#from-the-1password-app
 - dotfilesを落としてくる
     ```
     git clone https://github.com/keitaoouchi/dotfiles_public.git .dotfiles_public
