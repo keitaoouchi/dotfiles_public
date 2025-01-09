@@ -25,30 +25,17 @@ if [ -d .cargo/bin ]; then
   export PATH=$PATH:$HOME/.cargo/bin
 fi
 
-# direnv
-export EDITOR=code
-eval "$(direnv hook bash)"
-
-# asdf
-if [ -d $HOME/.asdf/ ]; then
-  PATH=$HOME/.asdf/shims:$PATH
-  . $(brew --prefix asdf)/libexec/asdf.sh
-fi
-
-# java
-if [ -f ~/.asdf/plugins/java/set-java-home.bash ]; then
-  source ~/.asdf/plugins/java/set-java-home.bash
-fi
-
 # starship
 if [ -x "$(command -v starship)" ]; then
   eval "$(starship init bash)"
   starship preset pastel-powerline -o ~/.config/starship.toml
 fi
 
-# bash-completion(mac)
-[[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
-
+if [ "$(uname)" == 'Darwin' ]; then
+  [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
+elif [ "$(uname)" == 'Linux' ]; then
+  [[ -r "/usr/share/bash-completion/bash_completion" ]] && . "/usr/share/bash-completion/bash_completion"
+fi
 # mise
 # https://mise.jdx.dev/getting-started.html#_2-activate-mise
 eval "$($HOME/.local/bin/mise activate bash)"
