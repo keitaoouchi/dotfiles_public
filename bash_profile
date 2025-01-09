@@ -50,4 +50,5 @@ fi
 [[ -r "/opt/homebrew/etc/profile.d/bash_completion.sh" ]] && . "/opt/homebrew/etc/profile.d/bash_completion.sh"
 
 # mise
+# https://mise.jdx.dev/getting-started.html#_2-activate-mise
 eval "$($HOME/.local/bin/mise activate bash)"

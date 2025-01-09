@@ -7,13 +7,13 @@ ln -s $HOME/.dotfiles_public/bash_profile $HOME/.bash_profile
 
 # If brew installed
 if [ -x "$(command -v brew)" ]; then
-  brew install curl git jq openssl tmux
+  brew install curl git jq openssl tmux bash-completion@2
   # nerd font
   brew install font-hack-nerd-font
 # If apt available
 elif [ -x "$(command -v apt)" ]; then
   sudo apt update -y
-  sudo apt install -y git jq openssl tmux
+  sudo apt install -y git jq openssl tmux bash-completion
   # nerd font
   FONT=FiraCode.tar.xz
   curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/$FONT -o ~/.local/share/fonts/$FONT \
