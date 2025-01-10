@@ -1,37 +1,66 @@
-rm $HOME/.gitconfig $HOME/.gitignore_global $HOME/.tmux.conf $HOME/.asdfrc $HOME/.bash_profile
-ln -s $HOME/.dotfiles_public/gitconfig $HOME/.gitconfig
-ln -s $HOME/.dotfiles_public/gitignore_global $HOME/.gitignore_global
-ln -s $HOME/.dotfiles_public/tmux.conf $HOME/.tmux.conf
-ln -s $HOME/.dotfiles_public/asdfrc $HOME/.asdfrc
-ln -s $HOME/.dotfiles_public/bash_profile $HOME/.bash_profile
+#!/usr/bin/env bash
+
+# Check if running as root (Linux only)
+if [ "$(uname)" != 'Darwin' ] && [ "$(id -u)" -ne 0 ]; then
+  echo "Switching to root user..."
+  exec sudo su -c "bash $0"
+fi
+
+# Create symlinks as original user
+ORIGINAL_USER=$(who am i | awk '{print $1}')
+if [ -n "$ORIGINAL_USER" ]; then
+  sudo -u $ORIGINAL_USER bash -c "
+    rm -f \$HOME/.gitconfig \$HOME/.gitignore_global \$HOME/.tmux.conf \$HOME/.bash_profile
+    for file in gitconfig gitignore_global tmux.conf bash_profile; do
+      if [ ! -f \"\$HOME/.dotfiles_public/\$file\" ]; then
+        echo \"Warning: Source file \$HOME/.dotfiles_public/\$file not found\"
+        continue
+      fi
+      ln -s \"\$HOME/.dotfiles_public/\$file\" \"\$HOME/.\$file\"
+    done
+  "
+fi
 
 # If brew installed
 if [ -x "$(command -v brew)" ]; then
-  brew install curl direnv git jq openssl tmux
+  brew install curl git jq openssl tmux bash bash-completion@2
+  # macの標準bashは古いのでchshで変更する
+  # brewで入れたbashは標準ではないので/etc/shellsに追加する
+  echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+  chsh -s /opt/homebrew/bin/bash
   # nerd font
   brew install font-hack-nerd-font
 # If apt available
 elif [ -x "$(command -v apt)" ]; then
-  sudo apt update -y
-  sudo apt install -y direnv git jq openssl tmux
+  apt update -y
+  apt install -y git jq openssl tmux bash-completion curl xz-utils
   # nerd font
-  FONT=FiraCode.tar.xz
-  curl -fsSL https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/$FONT -o ~/.local/share/fonts/$FONT \
+  FONT_NAME="FiraCode"
+  FONT_FILE="${FONT_NAME}.tar.xz"
+  FONT_DIR="$HOME/.local/share/fonts"
+  FONT_VERSION=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r .tag_name)
+  mkdir -p "$FONT_DIR"
+  curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/${FONT_VERSION}/${FONT_FILE}" -o "${FONT_DIR}/${FONT_FILE}" \
     && cd ~/.local/share/fonts \
-    && tar -xf $FONT \
-    && rm -f $FONT \
+    && tar -xf "$FONT_FILE" \
+    && rm -f "$FONT_FILE" \
     && fc-cache -fv
-
 fi
 
 # Install starship
 curl -sS https://starship.rs/install.sh | sh
 
-# Install asdf
-git clone https://github.com/asdf-vm/asdf.git ~/.asdf
-PATH=$PATH:$HOME/.asdf/bin
+# Install mise
+curl https://mise.run | sh
+eval "$($HOME/.local/bin/mise activate bash)"
+mise use -g usage
 
-asdf plugin add nodejs
-asdf plugin add ruby
-asdf plugin add python
-asdf plugin add golang
+if [ "$(uname)" == 'Darwin' ]; then
+  COMPLETION_DIR="/opt/homebrew/etc/bash_completion.d"
+else
+  COMPLETION_DIR="/etc/bash_completion.d"
+fi
+mkdir -p "$COMPLETION_DIR"
+# bash-completionでmiseも補完させたいところだが、シェルの初期化時にハングしてしまうのでTODOとして残しておく
+# TODO: miseの補完をbash-completionに追加し、macでシェルがハングしないことを確認する
+# mise completion bash --include-bash-completion-lib | tee "$COMPLETION_DIR/mise" > /dev/null

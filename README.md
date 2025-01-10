@@ -18,3 +18,11 @@
     cd .dotfiles_public
     ./start.sh
     ```
+
+### Ubuntuでの検証
+Ubuntuでの検証は以下のコマンドを実行。
+
+```bash
+docker build -t dotfiles-test .
+docker run -it dotfiles-test
+```
