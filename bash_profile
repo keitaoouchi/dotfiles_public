@@ -36,6 +36,7 @@ if [ "$(uname)" == 'Darwin' ]; then
 elif [ "$(uname)" == 'Linux' ]; then
   [[ -r "/usr/share/bash-completion/bash_completion" ]] && . "/usr/share/bash-completion/bash_completion"
 fi
+
 # mise
 # https://mise.jdx.dev/getting-started.html#_2-activate-mise
 eval "$($HOME/.local/bin/mise activate bash)"

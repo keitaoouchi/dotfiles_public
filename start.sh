@@ -23,7 +23,11 @@ fi
 
 # If brew installed
 if [ -x "$(command -v brew)" ]; then
-  brew install curl git jq openssl tmux bash-completion@2
+  brew install curl git jq openssl tmux bash bash-completion@2
+  # macの標準bashは古いのでchshで変更する
+  # brewで入れたbashは標準ではないので/etc/shellsに追加する
+  echo "/opt/homebrew/bin/bash" | sudo tee -a /etc/shells
+  chsh -s /opt/homebrew/bin/bash
   # nerd font
   brew install font-hack-nerd-font
 # If apt available
@@ -57,4 +61,6 @@ else
   COMPLETION_DIR="/etc/bash_completion.d"
 fi
 mkdir -p "$COMPLETION_DIR"
-mise completion bash --include-bash-completion-lib | tee "$COMPLETION_DIR/mise" > /dev/null
+# bash-completionでmiseも補完させたいところだが、シェルの初期化時にハングしてしまうのでTODOとして残しておく
+# TODO: miseの補完をbash-completionに追加し、macでシェルがハングしないことを確認する
+# mise completion bash --include-bash-completion-lib | tee "$COMPLETION_DIR/mise" > /dev/null
