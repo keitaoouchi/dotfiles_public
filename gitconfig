@@ -1,6 +1,7 @@
 [user]
   name = keita.oouchi
   email = keita.oouchi@gmail.com
+	signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBcLDLdTIZYHiZgze7dRUkIof1t6Me4WehFYkHBOhfV+
 [color]
   ui = auto
   status = auto
