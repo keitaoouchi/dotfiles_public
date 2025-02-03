@@ -11,6 +11,7 @@ if [ "$(uname)" == 'Darwin' ]; then
   export BASH_SILENCE_DEPRECATION_WARNING=1
   export PATH=/opt/homebrew/bin:$PATH
   java_macos_integration_enable=yes
+  eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # go
