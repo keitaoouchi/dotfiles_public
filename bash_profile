@@ -1,7 +1,7 @@
 # aliasの設定
 source $HOME/.dotfiles_public/alias.sh
 
-# secrectの設定
+# secretの設定
 if [ -f $HOME/.dotfiles_private/secret.sh ]; then
   $HOME/.dotfiles_private/secret.sh
 fi
@@ -9,7 +9,7 @@ fi
 # if mac
 if [ "$(uname)" == 'Darwin' ]; then
   export BASH_SILENCE_DEPRECATION_WARNING=1
-  export PATH=/opt/homebrew/bin:$PATH
+  export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH
   java_macos_integration_enable=yes
 fi
 
@@ -28,7 +28,7 @@ fi
 # starship
 if [ -x "$(command -v starship)" ]; then
   eval "$(starship init bash)"
-  starship preset pastel-powerline -o ~/.config/starship.toml
+  starship preset pure-preset -o ~/.config/starship.toml
 fi
 
 if [ "$(uname)" == 'Darwin' ]; then
@@ -40,3 +40,5 @@ fi
 # mise
 # https://mise.jdx.dev/getting-started.html#_2-activate-mise
 eval "$($HOME/.local/bin/mise activate bash)"
+
+source $HOME/.bashrc

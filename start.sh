@@ -61,6 +61,4 @@ else
   COMPLETION_DIR="/etc/bash_completion.d"
 fi
 mkdir -p "$COMPLETION_DIR"
-# bash-completionでmiseも補完させたいところだが、シェルの初期化時にハングしてしまうのでTODOとして残しておく
-# TODO: miseの補完をbash-completionに追加し、macでシェルがハングしないことを確認する
-# mise completion bash --include-bash-completion-lib | tee "$COMPLETION_DIR/mise" > /dev/null
+mise completion bash > "$COMPLETION_DIR/mise"
