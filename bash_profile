@@ -41,4 +41,6 @@ fi
 # https://mise.jdx.dev/getting-started.html#_2-activate-mise
 eval "$($HOME/.local/bin/mise activate bash)"
 
-source $HOME/.bashrc
+if [ -f "$HOME/.bashrc" ]; then
+  source "$HOME/.bashrc"
+fi
