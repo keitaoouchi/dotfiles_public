@@ -10,8 +10,8 @@ fi
 ORIGINAL_USER=$(who am i | awk '{print $1}')
 if [ -n "$ORIGINAL_USER" ]; then
   sudo -u $ORIGINAL_USER bash -c "
-    rm -f \$HOME/.gitconfig \$HOME/.gitignore_global \$HOME/.tmux.conf \$HOME/.bash_profile
-    for file in gitconfig gitignore_global tmux.conf bash_profile; do
+    rm -f \$HOME/.gitconfig \$HOME/.gitignore_global \$HOME/.tmux.conf \$HOME/.bash_profile \$HOME/.bashrc
+    for file in gitconfig gitignore_global tmux.conf bash_profile bashrc; do
       if [ ! -f \"\$HOME/.dotfiles_public/\$file\" ]; then
         echo \"Warning: Source file \$HOME/.dotfiles_public/\$file not found\"
         continue
