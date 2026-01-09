@@ -13,6 +13,13 @@ else
 fi
 
 {{- else if eq .chezmoi.os "linux" }}
+# Check if fontconfig is installed (required for fc-list and fc-cache)
+if ! command -v fc-list &> /dev/null; then
+  echo "Warning: fontconfig not installed. Skipping font installation."
+  echo "Install fontconfig manually: sudo apt install fontconfig"
+  exit 0
+fi
+
 # Install FiraCode Nerd Font from GitHub
 FONT_NAME="{{ .fonts.linux }}"
 FONT_FILE="${FONT_NAME}.tar.xz"
