@@ -1,6 +1,13 @@
 [user]
   name = keita.oouchi
   email = keita.oouchi@gmail.com
+  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILedvy851ijbMSuMqlZ7uIxtRUCHb8iewwRbftRu1Rty
+[commit]
+  gpgsign = true
+[gpg]
+  format = ssh
+[gpg "ssh"]
+  program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
 [color]
   ui = auto
   status = auto
@@ -15,6 +22,8 @@
   autocrlf = input
 	editor = vim -c \"set fenc=utf-8\"
 	#sshCommand = C:/Windows/System32/OpenSSH/ssh.exe
+[diff]
+    external = difft
 [alias]
   co = checkout
   br = branch
