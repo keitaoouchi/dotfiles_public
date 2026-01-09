@@ -1,0 +1,17 @@
+packages:
+  common:
+    - curl
+    - git
+    - jq
+    - openssl
+    - tmux
+  darwin:
+    - bash
+    - bash-completion@2
+  linux:
+    - bash-completion
+    - xz-utils
+
+fonts:
+  darwin: "font-hack-nerd-font"
+  linux: "FiraCode"
