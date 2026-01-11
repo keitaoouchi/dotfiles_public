@@ -8,10 +8,25 @@ packages:
   darwin:
     - bash
     - bash-completion@2
+    - bat
+    - difftastic
+    - eza
+    - fd
+    - fzf
+    - gh
+    - mcfly
+    - ripgrep
   linux:
     - bash-completion
     - xz-utils
     - fontconfig
+    - bat
+    - difftastic
+    - fd-find
+    - fzf
+    - gh
+    - mcfly
+    - ripgrep
 
 fonts:
   darwin: "font-hack-nerd-font"
