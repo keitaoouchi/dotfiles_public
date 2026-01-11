@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Installing mise..."
+
+if ! command -v mise &> /dev/null; then
+  curl https://mise.run | sh
+else
+  echo "mise already installed."
+fi
+
+# Activate mise in current shell for completion setup
+eval "$({{ .chezmoi.homeDir }}/.local/bin/mise activate bash)"
+
+# Set up bash completion
+{{- if eq .chezmoi.os "darwin" }}
+COMPLETION_DIR="{{ .homebrew.prefix }}/etc/bash_completion.d"
+{{- else if eq .chezmoi.os "linux" }}
+COMPLETION_DIR="/etc/bash_completion.d"
+{{- end }}
+
+if [ -n "$COMPLETION_DIR" ]; then
+  if sudo -n true 2>/dev/null; then
+    sudo mkdir -p "$COMPLETION_DIR"
+    mise completion bash | sudo tee "$COMPLETION_DIR/mise" > /dev/null
+    echo "mise bash completion installed to $COMPLETION_DIR"
+  else
+    echo "Warning: sudo not available, skipping mise bash completion installation"
+    echo "Run manually: sudo mkdir -p $COMPLETION_DIR && mise completion bash | sudo tee $COMPLETION_DIR/mise > /dev/null"
+  fi
+fi
+
+# Verify installation
+if command -v mise &> /dev/null; then
+  echo "mise installed successfully: $(mise --version)"
+else
+  echo "Error: mise installation failed."
+  exit 1
+fi
