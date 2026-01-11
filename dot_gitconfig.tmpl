@@ -1,13 +1,17 @@
 [user]
-  name = keita.oouchi
-  email = keita.oouchi@gmail.com
-  signingkey = ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILedvy851ijbMSuMqlZ7uIxtRUCHb8iewwRbftRu1Rty
+  name = {{ onepasswordRead "op://Private/dotfiles/git_name" }}
+  email = {{ onepasswordRead "op://Private/dotfiles/git_email" }}
+  signingkey = {{ onepasswordRead "op://Private/dotfiles/git_signing_key" }}
 [commit]
   gpgsign = true
 [gpg]
   format = ssh
 [gpg "ssh"]
+{{- if eq .chezmoi.os "darwin" }}
   program = /Applications/1Password.app/Contents/MacOS/op-ssh-sign
+{{- else if eq .chezmoi.os "linux" }}
+  program = /usr/bin/op-ssh-sign
+{{- end }}
 [color]
   ui = auto
   status = auto

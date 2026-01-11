@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -e
+
+{{- if eq .chezmoi.os "darwin" }}
+echo "Configuring macOS shell..."
+
+# Switch from old macOS bash to Homebrew bash
+HOMEBREW_BASH="{{ .homebrew.prefix }}/bin/bash"
+
+if [ ! -f "$HOMEBREW_BASH" ]; then
+  echo "Error: Homebrew bash not found at $HOMEBREW_BASH"
+  exit 1
+fi
+
+# Add Homebrew bash to /etc/shells if not already there
+if ! grep -q "^$HOMEBREW_BASH$" /etc/shells; then
+  echo "Adding $HOMEBREW_BASH to /etc/shells..."
+  echo "$HOMEBREW_BASH" | sudo tee -a /etc/shells > /dev/null
+fi
+
+# Change default shell to Homebrew bash
+if [ "$SHELL" != "$HOMEBREW_BASH" ]; then
+  echo "Changing default shell to $HOMEBREW_BASH..."
+  chsh -s "$HOMEBREW_BASH"
+  echo "Default shell changed. Please restart your terminal for changes to take effect."
+else
+  echo "Default shell is already $HOMEBREW_BASH"
+fi
+
+echo "macOS shell configuration complete."
+{{- else }}
+echo "Shell configuration not required for this platform."
+{{- end }}

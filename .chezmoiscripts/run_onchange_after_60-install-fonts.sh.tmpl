@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Installing Nerd Fonts..."
+
+{{- if eq .chezmoi.os "darwin" }}
+# Install Hack Nerd Font via Homebrew
+if ! brew list {{ .fonts.darwin }} &> /dev/null; then
+  brew install {{ .fonts.darwin }}
+  echo "Hack Nerd Font installed via Homebrew."
+else
+  echo "Hack Nerd Font already installed."
+fi
+
+{{- else if eq .chezmoi.os "linux" }}
+# Check if fontconfig is installed (required for fc-list and fc-cache)
+if ! command -v fc-list &> /dev/null; then
+  echo "Warning: fontconfig not installed. Skipping font installation."
+  echo "Install fontconfig manually: sudo apt install fontconfig"
+  exit 0
+fi
+
+# Install FiraCode Nerd Font from GitHub
+FONT_NAME="{{ .fonts.linux }}"
+FONT_FILE="${FONT_NAME}.tar.xz"
+FONT_DIR="{{ .chezmoi.homeDir }}/.local/share/fonts"
+
+if ! fc-list | grep -iq "FiraCode.*Nerd"; then
+  echo "Downloading FiraCode Nerd Font..."
+  FONT_VERSION=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r .tag_name)
+
+  mkdir -p "$FONT_DIR"
+  cd "$FONT_DIR"
+
+  curl -fsSL "https://github.com/ryanoasis/nerd-fonts/releases/download/${FONT_VERSION}/${FONT_FILE}" -o "${FONT_FILE}"
+  tar -xf "$FONT_FILE"
+  rm -f "$FONT_FILE"
+
+  fc-cache -fv
+
+  echo "FiraCode Nerd Font installed to $FONT_DIR"
+else
+  echo "FiraCode Nerd Font already installed."
+fi
+{{- end }}

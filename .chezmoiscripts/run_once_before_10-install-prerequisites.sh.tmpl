@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Checking prerequisites..."
+
+# Check for essential tools
+MISSING=()
+
+for tool in git curl; do
+  if ! command -v "$tool" &> /dev/null; then
+    MISSING+=("$tool")
+  fi
+done
+
+if [ ${#MISSING[@]} -gt 0 ]; then
+  echo "Error: Missing required tools: ${MISSING[*]}"
+  echo "Please install these tools before running chezmoi."
+  {{- if eq .chezmoi.os "darwin" }}
+  echo "On macOS, install Homebrew first: https://brew.sh"
+  {{- else if eq .chezmoi.os "linux" }}
+  echo "On Linux, run: sudo apt update && sudo apt install -y ${MISSING[*]}"
+  {{- end }}
+  exit 1
+fi
+
+echo "Prerequisites check passed."

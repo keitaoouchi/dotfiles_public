@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(ls:*)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(git -C /Users/dev/.dotfiles_public log --oneline)",
+      "WebSearch",
+      "Bash(docker run:*)"
     ],
     "deny": []
   }

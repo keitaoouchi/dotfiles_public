@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Installing Starship..."
+
+if ! command -v starship &> /dev/null; then
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+else
+  echo "Starship already installed."
+fi
+
+# Verify installation
+if command -v starship &> /dev/null; then
+  echo "Starship installed successfully: $(starship --version)"
+else
+  echo "Error: Starship installation failed."
+  exit 1
+fi

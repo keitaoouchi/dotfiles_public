@@ -1,0 +1,4 @@
+# Platform-specific file exclusions
+# Example: {{ if ne .chezmoi.os "darwin" }}macOS-only-file{{ end }}
+
+# Currently all dotfiles are platform-agnostic

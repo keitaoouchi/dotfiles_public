@@ -1,0 +1,11 @@
+{{- $email := onepasswordRead "op://Private/dotfiles/git_email" -}}
+{{- $name := onepasswordRead "op://Private/dotfiles/git_name" -}}
+
+[data]
+  email = {{ $email | quote }}
+  git_name = {{ $name | quote }}
+
+{{- if eq .chezmoi.os "darwin" }}
+[data.homebrew]
+  prefix = "/opt/homebrew"
+{{- end }}

@@ -1,0 +1,62 @@
+FROM ubuntu:latest
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install minimal dependencies
+RUN apt-get update && apt-get install -y \
+    sudo \
+    curl \
+    git \
+    ca-certificates \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m -s /bin/bash testuser && \
+    echo "testuser ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/testuser
+
+# Install chezmoi
+RUN sh -c "$(curl -fsLS get.chezmoi.io)" -- -b /usr/local/bin
+
+WORKDIR /home/testuser
+USER testuser
+
+# Create mock 1Password CLI for testing
+RUN mkdir -p /home/testuser/.local/bin && \
+    cat > /home/testuser/.local/bin/op << 'EOF'
+#!/bin/bash
+# Mock 1Password CLI for testing
+case "$*" in
+  *"account list"*)
+    echo "testaccount"
+    exit 0
+    ;;
+  *"dotfiles/git_name"*)
+    echo "keita.oouchi"
+    ;;
+  *"dotfiles/git_email"*)
+    echo "keita.oouchi@gmail.com"
+    ;;
+  *"dotfiles/git_signing_key"*)
+    echo "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAILedvy851ijbMSuMqlZ7uIxtRUCHb8iewwRbftRu1Rty"
+    ;;
+  *"secrets/github_token"*)
+    echo "ghp_test_token_1234567890"
+    ;;
+  *)
+    echo "test-value"
+    ;;
+esac
+EOF
+
+RUN chmod +x /home/testuser/.local/bin/op
+
+ENV PATH="/home/testuser/.local/bin:$PATH"
+
+# Copy chezmoi source directory
+# Note: Run this from the parent directory with:
+# docker build -f Dockerfile.chezmoi -t dotfiles-chezmoi-test .
+# and ensure the chezmoi source is in ./chezmoi-src/
+COPY --chown=testuser:testuser chezmoi-src/ /home/testuser/.local/share/chezmoi/
+
+ENTRYPOINT ["/bin/bash"]

@@ -1,0 +1,49 @@
+# aliasの設定
+source $HOME/.alias.sh
+
+# 1Passwordからのシークレット（旧: ~/.dotfiles_private/secret.sh）
+export GITHUB_TOKEN="{{ onepasswordRead "op://Private/secrets/github_token" }}"
+# 他のsecret.sh内の環境変数があればここに追加
+
+{{- if eq .chezmoi.os "darwin" }}
+# macOS固有設定
+export BASH_SILENCE_DEPRECATION_WARNING=1
+export PATH={{ .homebrew.prefix }}/bin:{{ .homebrew.prefix }}/sbin:$PATH
+java_macos_integration_enable=yes
+{{- end }}
+
+# go
+if [ ! -d $HOME/.go ]; then
+  mkdir $HOME/.go
+fi
+export GOPATH=$HOME/.go
+export PATH=$GOPATH/bin:$PATH
+
+# rust
+if [ -d $HOME/.cargo/bin ]; then
+  export PATH=$PATH:$HOME/.cargo/bin
+fi
+
+# starship
+if [ -x "$(command -v starship)" ]; then
+  eval "$(starship init bash)"
+  starship preset pure-preset -o ~/.config/starship.toml
+fi
+
+# mcfly
+if [ -x "$(command -v mcfly)" ]; then
+  eval "$(mcfly init bash)"
+fi
+
+# bash completion
+{{- if eq .chezmoi.os "darwin" }}
+[[ -r "{{ .homebrew.prefix }}/etc/profile.d/bash_completion.sh" ]] && . "{{ .homebrew.prefix }}/etc/profile.d/bash_completion.sh"
+{{- else if eq .chezmoi.os "linux" }}
+[[ -r "/usr/share/bash-completion/bash_completion" ]] && . "/usr/share/bash-completion/bash_completion"
+{{- end }}
+
+# mise
+eval "$({{ .chezmoi.homeDir }}/.local/bin/mise activate bash)"
+
+# OrbStack
+source ~/.orbstack/shell/init.bash 2>/dev/null || :

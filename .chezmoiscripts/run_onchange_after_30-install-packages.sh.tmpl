@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Installing packages..."
+
+{{- if eq .chezmoi.os "darwin" }}
+if ! command -v brew &> /dev/null; then
+  echo "Error: Homebrew not installed. Please install from https://brew.sh"
+  exit 1
+fi
+
+# Install common and macOS-specific packages
+brew install {{ range .packages.common }}{{ . }} {{ end }}{{ range .packages.darwin }}{{ . }} {{ end }}
+
+echo "macOS packages installed successfully."
+
+{{- else if eq .chezmoi.os "linux" }}
+# Install common and Linux-specific packages
+echo "Updating package lists..."
+sudo apt update -y
+
+echo "Installing packages..."
+sudo apt install -y {{ range .packages.common }}{{ . }} {{ end }}{{ range .packages.linux }}{{ . }} {{ end }}
+
+echo "Linux packages installed successfully."
+{{- end }}
