@@ -1,9 +1,4 @@
-branches/*
-log/*
-error_log/*
-tmp/*
 *.bak
-report
 .ctags
 
 # intelliJ
@@ -14,25 +9,12 @@ report
 .DS_Store
 .AppleDouble
 .LSOverride
-Icon
-# Thumbnails
 ._*
-# Files that might appear on external disk
 .Spotlight-V100
 .Trashes
 
-#vim
+# vim
 *~
-
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
-
-# Folder config file
-Desktop.ini
-
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
 
 # npm
 node_modules
@@ -41,18 +23,15 @@ node_modules
 .envrc
 .env
 
-# ruby
+# ruby / rails
 vendor/bundler?
-railways.cache
-db/structure.sql
-
-# rails
 config/application.yml
 secrets.yml
 
 # git
 .gitconfig.user
 
+# Xcode / iOS
 */project.xcworkspace/xcshareddata/
 Carthage
 fastlane/test_output/
