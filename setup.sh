@@ -42,6 +42,26 @@ fi
 ln -sf "$DOTFILES_DIR/config/my.cnf" "$HOME/.config/my.cnf"
 echo "  Linked: ~/.config/my.cnf"
 
+# config/helix
+if [[ -L "$HOME/.config/helix" ]]; then
+  rm "$HOME/.config/helix"
+elif [[ -d "$HOME/.config/helix" ]]; then
+  mv "$HOME/.config/helix" "$HOME/.config/helix.bak"
+  echo "  Backed up: ~/.config/helix.bak"
+fi
+ln -sf "$DOTFILES_DIR/config/helix" "$HOME/.config/helix"
+echo "  Linked: ~/.config/helix"
+
+# config/yazi
+if [[ -L "$HOME/.config/yazi" ]]; then
+  rm "$HOME/.config/yazi"
+elif [[ -d "$HOME/.config/yazi" ]]; then
+  mv "$HOME/.config/yazi" "$HOME/.config/yazi.bak"
+  echo "  Backed up: ~/.config/yazi.bak"
+fi
+ln -sf "$DOTFILES_DIR/config/yazi" "$HOME/.config/yazi"
+echo "  Linked: ~/.config/yazi"
+
 # ---- 1Password: generate ~/.gitconfig.local ------------------------------
 
 if command -v op &>/dev/null && op account list &>/dev/null; then
@@ -70,7 +90,11 @@ brew install \
   curl git jq openssl tmux \
   zsh-completions \
   bat difftastic eza fd fzf gh mcfly ripgrep \
-  claude-code codex gh zellix yazi helix   powerlevel10k
+  claude-code codex gh zellix yazi helix powerlevel10k \
+  pyright gopls terraform-ls
+
+echo "==> Installing LSP servers (npm)..."
+npm install -g typescript-language-server typescript vscode-langservers-extracted
 
 # ---- Starship ------------------------------------------------------------
 
