@@ -1,0 +1,4 @@
+[[mgr.prepend_keymap]]
+on   = "<Enter>"
+run  = '''shell --orphan -- "$HOME/.dotfiles_public/bin/yazi-open-in-helix.sh %h"'''
+desc = "Open file in Helix pane"
