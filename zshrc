@@ -1,11 +1,11 @@
+autoload -Uz compinit
+compinit
+
 # aliases
 source $HOME/.alias.sh
 
 # zmv (zsh built-in)
 autoload -U zmv
-
-# 1Password secrets
-export GITHUB_TOKEN="$(op read op://Private/secrets/github_token 2>/dev/null)"
 
 # macOS / Homebrew
 export PATH=/opt/homebrew/bin:/opt/homebrew/sbin:$PATH
