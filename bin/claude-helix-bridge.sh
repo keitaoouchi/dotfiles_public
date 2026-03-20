@@ -52,7 +52,7 @@ detect_surface_state() {
   fi
 }
 
-# --- Right pane detection ---
+# --- Right pane detection (3-pane layout: CC | Helix | Yazi) ---
 get_helix_surface_id() {
   # Manual override
   if [[ -n "${CLAUDE_HELIX_SURFACE_ID:-}" ]]; then
@@ -87,7 +87,7 @@ get_helix_surface_id() {
   fi
   rm -f "$identify_err"
 
-  # Get all panes, find the one that is not ours
+  # Get all panes, find the first one that is not ours (in 3-pane layout, this is the Helix pane)
   # cmux list-panes output: "* pane:1  [1 surface]  [focused]\n  pane:2  [1 surface]"
   local my_pane
   my_pane=$(echo "$identify_json" | jq -r '.caller.pane_ref // empty')
@@ -130,12 +130,38 @@ get_helix_surface_id() {
       log "SPLIT: shell ready after ${retries} retries (surface=$created_surface)"
     fi
 
-    # Focus back to CC pane
+    # Create Yazi pane (rightmost pane in 3-pane layout: CC | Helix | Yazi)
+    log "SPLIT: Creating right pane for Yazi"
+    local yazi_pane_output
+    yazi_pane_output=$(cmux new-pane --direction right 2>&1) || {
+      log "WARN: cmux new-pane for yazi failed: $yazi_pane_output"
+      # Don't return error - Helix pane is ready, yazi is optional
+    }
+    if [[ -n "$yazi_pane_output" ]]; then
+      local yazi_surface
+      yazi_surface=$(echo "$yazi_pane_output" | grep -oE 'surface:[0-9]+')
+      if [[ -n "$yazi_surface" ]]; then
+        # Wait for shell ready in yazi pane
+        local yazi_retries=0
+        while (( yazi_retries < 30 )); do
+          if cmux read-screen --surface "$yazi_surface" 2>/dev/null | grep -qE '[$#❯%]'; then
+            break
+          fi
+          sleep 0.1
+          yazi_retries=$(( yazi_retries + 1 ))
+        done
+        # Launch yazi
+        cmux send --surface "$yazi_surface" "yazi\r" 2>/dev/null
+        log "SPLIT: launched yazi (surface=$yazi_surface)"
+      fi
+    fi
+
+    # Focus back to CC pane (after both panes are created)
     if ! cmux focus-pane --pane "$my_pane" > /dev/null 2>&1; then
       log "WARN: Failed to restore focus to Claude Code pane ($my_pane)"
     fi
 
-    # Return the created surface directly (skip further detection)
+    # Return the Helix surface directly (skip further detection)
     echo "$created_surface" > "$cache_file"
     echo "$created_surface"
     return 0
