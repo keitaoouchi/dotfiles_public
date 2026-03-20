@@ -1,0 +1,16 @@
+theme = "catppuccin_mocha"
+
+[editor]
+line-number = "relative"
+cursorline = true
+scrolloff = 5
+mouse = true
+
+[editor.soft-wrap]
+enable = true
+
+[editor.file-picker]
+hidden = true
+
+[editor.gutters]
+layout = ["diagnostics", "spacer", "line-numbers", "spacer", "diff"]
